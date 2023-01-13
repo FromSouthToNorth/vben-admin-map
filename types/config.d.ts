@@ -113,7 +113,7 @@ export interface ProjectConfig {
   showFooter: boolean;
   // menuType: MenuTypeEnum;
   headerSetting: HeaderSetting;
-  //  mapBoxGL
+  // mapBoxGL
   mapBoxGLSetting: MapBoxGLSetting;
   // menuSetting
   menuSetting: MenuSetting;

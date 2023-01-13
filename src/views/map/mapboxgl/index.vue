@@ -1,5 +1,5 @@
 <template>
-  <div ref="mapRef" :class="prefixCls" :style="getWrapStyle"></div>
+  <div ref="mapRef" :class="prefixCls" :style="{width, height}"></div>
 </template>
 
 <script lang="ts" setup>
@@ -21,29 +21,33 @@
   import { ThemeEnum } from '/@/enums/appEnum';
   import { MapBoxStyleIDEnum } from '/@/enums/mapBoxGlEnum';
 
+  defineProps({
+    width: {
+      type: String,
+      default: '100%',
+    },
+    height: {
+      type: String,
+      default: 'calc(100vh - 78px)',
+    },
+  });
+
   const { getMapBoxGLTheme } = useMapBoxGLSetting();
 
-  const heightRef = ref(window.innerHeight);
-  const widthRef = ref(window.innerWidth);
   const { prefixCls } = useDesign('map-box-gl');
   const mapRef = ref<ElRef>(null);
   const mapboxGlRef = ref(null) as Ref<Nullable<mapbox.Map>>;
-
-  const getWrapStyle = computed((): CSSProperties => {
-    return {
-      height: `${unref(heightRef)}px`,
-      width: `${unref(widthRef)}px`,
-    };
-  });
 
   const styleId = computed(() => {
     const theme = unref(getMapBoxGLTheme);
     return theme == ThemeEnum.DARK ? MapBoxStyleIDEnum.DARK_V10 : MapBoxStyleIDEnum.STREETS_V12;
   });
 
+  const accessToken =
+    'pk.eyJ1IjoiaHlzZSIsImEiOiJja3c0ZDNxdTIwNHk1MnBtem5yZ2s4MDJmIn0.Bc8fEfsCPoB_ihTfnQ6zbg';
+
   function init() {
-    mapbox.accessToken =
-      'pk.eyJ1IjoiaHlzZSIsImEiOiJja3c0ZDNxdTIwNHk1MnBtem5yZ2s4MDJmIn0.Bc8fEfsCPoB_ihTfnQ6zbg';
+    mapbox.accessToken = accessToken;
     const mapEL = unref(mapRef) as HTMLElement;
 
     mapboxGlRef.value = new mapbox.Map({

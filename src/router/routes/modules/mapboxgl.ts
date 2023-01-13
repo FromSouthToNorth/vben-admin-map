@@ -17,7 +17,7 @@ const mapboxgl: AppRouteModule = {
     {
       path: 'mapboxgl',
       name: 'MapboxGL',
-      component: () => import('/@/views/mapboxgl/index.vue'),
+      component: () => import('/@/views/map/mapboxgl/index.vue'),
       meta: {
         // affix: true,
         title: t('routes.dashboard.mapboxgl'),
