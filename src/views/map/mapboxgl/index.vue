@@ -1,20 +1,11 @@
 <template>
-  <div ref="mapRef" :class="prefixCls" :style="{width, height}"></div>
+  <div ref="mapRef" :class="prefixCls" :style="{ width, height }"></div>
 </template>
 
 <script lang="ts" setup>
   import 'mapbox-gl/dist/mapbox-gl.css';
   import mapbox from 'mapbox-gl/dist/mapbox-gl.js';
-  import {
-    computed,
-    CSSProperties,
-    onBeforeUnmount,
-    onDeactivated,
-    Ref,
-    ref,
-    unref,
-    watch,
-  } from 'vue';
+  import { computed, onBeforeUnmount, onDeactivated, Ref, ref, unref, watch } from 'vue';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useMapBoxGLSetting } from '/@/hooks/setting/useMapBoxGLSetting';
@@ -40,7 +31,7 @@
 
   const styleId = computed(() => {
     const theme = unref(getMapBoxGLTheme);
-    return theme == ThemeEnum.DARK ? MapBoxStyleIDEnum.DARK_V10 : MapBoxStyleIDEnum.STREETS_V12;
+    return theme == ThemeEnum.DARK ? MapBoxStyleIDEnum.DARK_V11 : MapBoxStyleIDEnum.LIGHT_V11;
   });
 
   const accessToken =
@@ -53,7 +44,7 @@
     mapboxGlRef.value = new mapbox.Map({
       container: mapEL,
       style: styleId.value,
-      center: [120.57229, 31.28505],
+      center: [104.0633, 30.6597],
       zoom: 9,
     });
   }

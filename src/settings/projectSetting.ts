@@ -11,7 +11,7 @@ import {
 } from '/@/enums/appEnum';
 import { HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_LIST } from './designSetting';
 import { primaryColor } from '../../build/config/themeConfig';
-import {string} from "vue-types";
+import { string } from 'vue-types';
 
 // ! You need to clear the browser cache after the change
 const setting: ProjectConfig = {
