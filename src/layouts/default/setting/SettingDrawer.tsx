@@ -1,5 +1,5 @@
 import { defineComponent, computed, unref } from 'vue';
-import { BasicDrawer } from '/@/components/Drawer/index';
+import { BasicDrawer } from '/@/components/Drawer';
 import { Divider } from 'ant-design-vue';
 import {
   TypePicker,
@@ -30,6 +30,7 @@ import {
   getMenuTriggerOptions,
   routerTransitionOptions,
   menuTypeList,
+  mapStyleList,
   mixSidebarTriggerOptions,
 } from './enum';
 
@@ -38,6 +39,7 @@ import {
   SIDE_BAR_BG_COLOR_LIST,
   APP_PRESET_COLOR_LIST,
 } from '/@/settings/designSetting';
+import { setMapboxStyle } from '/@/layouts/default/setting/map';
 
 const { t } = useI18n();
 
@@ -94,6 +96,19 @@ export default defineComponent({
     const getShowMenuRef = computed(() => {
       return unref(getShowMenu) && !unref(getIsHorizontal);
     });
+
+    function renderMapStyle() {
+      return (
+        <>
+          <TypePicker
+            menuTypeList={mapStyleList}
+            handler={(item: typeof menuTypeList[0]) => {
+              setMapboxStyle(item.type);
+            }}
+          />
+        </>
+      );
+    }
 
     function renderSidebar() {
       return (
@@ -405,6 +420,8 @@ export default defineComponent({
       >
         {unref(getShowDarkModeToggle) && <Divider>{() => t('layout.setting.darkMode')}</Divider>}
         {unref(getShowDarkModeToggle) && <AppDarkModeToggle class="mx-auto" />}
+        <Divider>{() => t('layout.setting.mapStyle')}</Divider>
+        {renderMapStyle()}
         <Divider>{() => t('layout.setting.navMode')}</Divider>
         {renderSidebar()}
         <Divider>{() => t('layout.setting.sysTheme')}</Divider>

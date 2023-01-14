@@ -8,6 +8,7 @@ import {
 } from '/@/enums/menuEnum';
 
 import { useI18n } from '/@/hooks/web/useI18n';
+import { MapBoxStyleIDEnum } from '/@/enums/mapBoxGlEnum';
 
 const { t } = useI18n();
 
@@ -141,6 +142,24 @@ export const menuTypeList = [
     title: t('layout.setting.menuTypeMixSidebar'),
     mode: MenuModeEnum.INLINE,
     type: MenuTypeEnum.MIX_SIDEBAR,
+  },
+];
+
+export const mapStyleList = [
+  {
+    title: t('layout.setting.mapboxStreets'),
+    type: MapBoxStyleIDEnum.STREETS_V12,
+    bagImg: 'mapbox-streets.png',
+  },
+  {
+    title: t('layout.setting.mapboxOutdoors'),
+    type: MapBoxStyleIDEnum.OUTDOORS_V12,
+    bagImg: 'mapbox-outdoors.png',
+  },
+  {
+    title: t('layout.setting.mapboxSatelliteStreets'),
+    type: MapBoxStyleIDEnum.SATELLITE_STREETS_V12,
+    bagImg: 'mapbox-satellite-streets.png',
   },
 ];
 

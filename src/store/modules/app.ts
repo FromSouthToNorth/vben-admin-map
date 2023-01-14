@@ -26,6 +26,8 @@ interface AppState {
   projectConfig: ProjectConfig | null;
   // When the window shrinks, remember some states, and restore these states when the window is restored
   beforeMiniInfo: BeforeMiniState;
+  // map style
+  mapboxStyle?: string;
 }
 let timeId: TimeoutHandle;
 export const useAppStore = defineStore({
@@ -35,10 +37,14 @@ export const useAppStore = defineStore({
     pageLoading: false,
     projectConfig: Persistent.getLocal(PROJ_CFG_KEY),
     beforeMiniInfo: {},
+    mapboxStyle: undefined,
   }),
   getters: {
     getPageLoading(): boolean {
       return this.pageLoading;
+    },
+    getMapboxStyle(): string | undefined {
+      return this.mapboxStyle;
     },
     getDarkMode(): 'light' | 'dark' | string {
       return this.darkMode || localStorage.getItem(APP_DARK_MODE_KEY_) || darkMode;
@@ -72,7 +78,9 @@ export const useAppStore = defineStore({
     setPageLoading(loading: boolean): void {
       this.pageLoading = loading;
     },
-
+    setMapboxStyle(mapboxStyle: string | undefined): void {
+      this.mapboxStyle = mapboxStyle;
+    },
     setDarkMode(mode: ThemeEnum): void {
       this.darkMode = mode;
       localStorage.setItem(APP_DARK_MODE_KEY_, mode);

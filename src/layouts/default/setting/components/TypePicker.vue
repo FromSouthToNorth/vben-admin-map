@@ -12,7 +12,8 @@
             },
           ]"
         >
-          <div class="mix-sidebar"></div>
+          <img v-if="item.bagImg" :src="getImageUrl(item.bagImg)" :alt="item.title" />
+          <div v-else class="mix-sidebar"></div>
         </div>
       </Tooltip>
     </template>
@@ -45,8 +46,13 @@
     setup() {
       const { prefixCls } = useDesign('setting-menu-type-picker');
 
+      function getImageUrl(name) {
+        return new URL(`../../../../assets/images/mapbox/${name}`, import.meta.url).href;
+      }
+
       return {
         prefixCls,
+        getImageUrl,
       };
     },
   });
@@ -159,7 +165,7 @@
 
       &:hover,
       &--active {
-        padding: 12px;
+        padding: 1.6px;
         border: 2px solid @primary-color;
 
         &::before,

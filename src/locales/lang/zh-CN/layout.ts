@@ -45,6 +45,12 @@ export default {
     menuTypeMixSidebar: '左侧菜单混合模式',
     menuTypeMix: '顶部菜单混合模式',
     menuTypeTopMenu: '顶部菜单模式',
+    // mapbox style
+    mapboxLight: '浅色',
+    mapboxDark: '暗黑',
+    mapboxStreets: '街道',
+    mapboxOutdoors: '户外',
+    mapboxSatelliteStreets: '卫星街道',
 
     on: '开',
     off: '关',
@@ -61,6 +67,7 @@ export default {
 
     darkMode: '主题',
     navMode: '导航栏模式',
+    mapStyle: '地图样式',
     interfaceFunction: '界面功能',
     interfaceDisplay: '界面显示',
     animation: '动画',

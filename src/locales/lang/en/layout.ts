@@ -45,6 +45,13 @@ export default {
     menuTypeMix: 'Top Menu Mix mode',
     menuTypeTopMenu: 'Top menu mode',
 
+    // mapbox style
+    mapboxLight: 'Light',
+    mapboxDark: 'Dark',
+    mapboxStreets: 'Streets',
+    mapboxOutdoors: 'Outdoors',
+    mapboxSatelliteStreets: 'Satellite streets',
+
     on: 'On',
     off: 'Off',
     minute: 'Minute',
@@ -61,6 +68,7 @@ export default {
 
     darkMode: 'Dark mode',
     navMode: 'Navigation mode',
+    mapStyle: 'Map style',
     interfaceFunction: 'Interface function',
     interfaceDisplay: 'Interface display',
     animation: 'Animation',

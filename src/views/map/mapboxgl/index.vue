@@ -23,7 +23,7 @@
     },
   });
 
-  const { getMapBoxGLTheme } = useMapBoxGLSetting();
+  const { getMapBoxGLTheme, getMapBoxStyle } = useMapBoxGLSetting();
 
   const { prefixCls } = useDesign('map-box-gl');
   const mapRef = ref<ElRef>(null);
@@ -52,7 +52,13 @@
   watch(
     () => styleId.value,
     (v) => {
-      console.log(v);
+      mapboxGlRef.value.setStyle(v);
+    },
+  );
+
+  watch(
+    () => getMapBoxStyle.value,
+    (v) => {
       mapboxGlRef.value.setStyle(v);
     },
   );

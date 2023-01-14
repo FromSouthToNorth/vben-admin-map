@@ -7,7 +7,10 @@ export function useMapBoxGLSetting() {
 
   const getMapBoxGLTheme = computed(() => appStore.getMapBoxGLSetting.theme);
 
+  const getMapBoxStyle = computed(() => appStore.getMapboxStyle);
+
   return {
     getMapBoxGLTheme,
+    getMapBoxStyle,
   };
 }

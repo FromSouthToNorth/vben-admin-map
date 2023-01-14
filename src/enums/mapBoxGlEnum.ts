@@ -1,5 +1,3 @@
-export const MAP_BOX = 'mapbox:';
-
 export enum MapBoxStyleIDEnum {
   // 街道
   STREETS_V12 = 'mapbox://styles/mapbox/streets-v12',
