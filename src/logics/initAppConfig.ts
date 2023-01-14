@@ -9,7 +9,7 @@ import projectSetting from '/@/settings/projectSetting';
 import {
   updateHeaderBgColor,
   updateSidebarBgColor,
-  updateMapBoxGLBgColo,
+  updateMapboxBgColor,
 } from '/@/logics/theme/updateBackground';
 import { updateColorWeak } from '/@/logics/theme/updateColorWeak';
 import { updateGrayMode } from '/@/logics/theme/updateGrayMode';
@@ -58,7 +58,7 @@ export function initAppConfigStore() {
   if (darkMode === ThemeEnum.DARK) {
     updateHeaderBgColor();
     updateSidebarBgColor();
-    updateMapBoxGLBgColo();
+    updateMapboxBgColor();
   } else {
     headerBgColor && updateHeaderBgColor(headerBgColor);
     bgColor && updateSidebarBgColor(bgColor);

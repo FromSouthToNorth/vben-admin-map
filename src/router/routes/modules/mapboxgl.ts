@@ -7,20 +7,20 @@ const mapboxgl: AppRouteModule = {
   path: '/map',
   name: 'Map',
   component: LAYOUT,
-  redirect: '/map/mapboxgl',
+  redirect: '/map/mapbox',
   meta: {
     orderNo: 10,
     icon: 'mdi:mapbox',
-    title: t('routes.dashboard.mapboxgl'),
+    title: t('routes.dashboard.map'),
   },
   children: [
     {
-      path: 'mapboxgl',
-      name: 'MapboxGL',
+      path: 'mapbox',
+      name: 'Mapbox',
       component: () => import('/@/views/map/mapboxgl/index.vue'),
       meta: {
         // affix: true,
-        title: t('routes.dashboard.mapboxgl'),
+        title: t('routes.dashboard.mapbox'),
       },
     },
   ],

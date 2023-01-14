@@ -8,14 +8,12 @@
   import { computed, onBeforeUnmount, onDeactivated, Ref, ref, unref, watch } from 'vue';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { useMapBoxGLSetting } from '/@/hooks/setting/useMapBoxGLSetting';
-  import { ThemeEnum } from '/@/enums/appEnum';
-  import { MapBoxStyleIDEnum } from '/@/enums/mapBoxGlEnum';
+  import { useMapboxSetting } from '/@/hooks/setting/useMapboxSetting';
 
   defineProps({
     width: {
       type: String,
-      default: '100%',
+      default: '100wh',
     },
     height: {
       type: String,
@@ -23,15 +21,14 @@
     },
   });
 
-  const { getMapBoxGLTheme, getMapBoxStyle } = useMapBoxGLSetting();
+  const { getMapboxStyle } = useMapboxSetting();
 
   const { prefixCls } = useDesign('map-box-gl');
   const mapRef = ref<ElRef>(null);
   const mapboxGlRef = ref(null) as Ref<Nullable<mapbox.Map>>;
 
   const styleId = computed(() => {
-    const theme = unref(getMapBoxGLTheme);
-    return theme == ThemeEnum.DARK ? MapBoxStyleIDEnum.DARK_V11 : MapBoxStyleIDEnum.LIGHT_V11;
+    return unref(getMapboxStyle);
   });
 
   const accessToken =
@@ -51,13 +48,6 @@
 
   watch(
     () => styleId.value,
-    (v) => {
-      mapboxGlRef.value.setStyle(v);
-    },
-  );
-
-  watch(
-    () => getMapBoxStyle.value,
     (v) => {
       mapboxGlRef.value.setStyle(v);
     },

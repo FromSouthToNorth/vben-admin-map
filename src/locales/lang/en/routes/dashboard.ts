@@ -3,5 +3,6 @@ export default {
   about: 'About',
   workbench: 'Workbench',
   analysis: 'Analysis',
-  mapboxgl: 'MapboxGL',
+  map: 'map',
+  mapbox: 'Mapbox',
 };

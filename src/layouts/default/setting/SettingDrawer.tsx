@@ -30,7 +30,7 @@ import {
   getMenuTriggerOptions,
   routerTransitionOptions,
   menuTypeList,
-  mapStyleList,
+  mapboxStyleList,
   mixSidebarTriggerOptions,
 } from './enum';
 
@@ -39,7 +39,10 @@ import {
   SIDE_BAR_BG_COLOR_LIST,
   APP_PRESET_COLOR_LIST,
 } from '/@/settings/designSetting';
-import { setMapboxStyle } from '/@/layouts/default/setting/map';
+import { baseMapbox } from '/@/layouts/default/setting/map';
+import { useMapboxSetting } from '/@/hooks/setting/useMapboxSetting';
+import { useRouter } from 'vue-router';
+import { mapboxRouter } from '/@/enums/mapboxEnum';
 
 const { t } = useI18n();
 
@@ -91,6 +94,10 @@ export default defineComponent({
       getShowSearch,
     } = useHeaderSetting();
 
+    const { currentRoute } = useRouter();
+
+    const { getMapboxType } = useMapboxSetting();
+
     const { getShowMultipleTab, getShowQuick, getShowRedo, getShowFold } = useMultipleTabSetting();
 
     const getShowMenuRef = computed(() => {
@@ -98,13 +105,15 @@ export default defineComponent({
     });
 
     function renderMapStyle() {
+      console.log();
       return (
         <>
           <TypePicker
-            menuTypeList={mapStyleList}
-            handler={(item: typeof menuTypeList[0]) => {
-              setMapboxStyle(item.type);
+            menuTypeList={mapboxStyleList}
+            handler={(item: typeof mapboxStyleList[0]) => {
+              baseMapbox(item);
             }}
+            def={unref(getMapboxType)}
           />
         </>
       );
@@ -420,8 +429,10 @@ export default defineComponent({
       >
         {unref(getShowDarkModeToggle) && <Divider>{() => t('layout.setting.darkMode')}</Divider>}
         {unref(getShowDarkModeToggle) && <AppDarkModeToggle class="mx-auto" />}
-        <Divider>{() => t('layout.setting.mapStyle')}</Divider>
-        {renderMapStyle()}
+        {unref(currentRoute.value.path == mapboxRouter) && (
+          <Divider>{() => t('layout.setting.mapStyle')}</Divider>
+        )}
+        {unref(currentRoute.value.path == mapboxRouter) && renderMapStyle()}
         <Divider>{() => t('layout.setting.navMode')}</Divider>
         {renderSidebar()}
         <Divider>{() => t('layout.setting.sysTheme')}</Divider>

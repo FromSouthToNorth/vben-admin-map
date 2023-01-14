@@ -2,13 +2,13 @@ import { ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum';
 import {
   MenuModeEnum,
   MenuTypeEnum,
+  MixSidebarTriggerEnum,
   TopMenuAlignEnum,
   TriggerEnum,
-  MixSidebarTriggerEnum,
 } from '/@/enums/menuEnum';
 
 import { useI18n } from '/@/hooks/web/useI18n';
-import { MapBoxStyleIDEnum } from '/@/enums/mapBoxGlEnum';
+import { MapboxStyleIDEnum, MapboxStyleTypeEnum } from '/@/enums/mapboxEnum';
 
 const { t } = useI18n();
 
@@ -145,21 +145,24 @@ export const menuTypeList = [
   },
 ];
 
-export const mapStyleList = [
+export const mapboxStyleList = [
   {
     title: t('layout.setting.mapboxStreets'),
-    type: MapBoxStyleIDEnum.STREETS_V12,
+    style: MapboxStyleIDEnum.STREETS_V12,
     bagImg: 'mapbox-streets.png',
+    type: MapboxStyleTypeEnum.STREETS,
   },
   {
     title: t('layout.setting.mapboxOutdoors'),
-    type: MapBoxStyleIDEnum.OUTDOORS_V12,
+    style: MapboxStyleIDEnum.OUTDOORS_V12,
     bagImg: 'mapbox-outdoors.png',
+    type: MapboxStyleTypeEnum.OUTDOORS,
   },
   {
     title: t('layout.setting.mapboxSatelliteStreets'),
-    type: MapBoxStyleIDEnum.SATELLITE_STREETS_V12,
+    style: MapboxStyleIDEnum.SATELLITE_STREETS_V12,
     bagImg: 'mapbox-satellite-streets.png',
+    type: MapboxStyleTypeEnum.SATELLITE_STREETS,
   },
 ];
 

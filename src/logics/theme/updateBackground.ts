@@ -2,6 +2,7 @@ import { colorIsDark, lighten, darken } from '/@/utils/color';
 import { useAppStore } from '/@/store/modules/app';
 import { ThemeEnum } from '/@/enums/appEnum';
 import { setCssVar } from './util';
+import { MapboxStyleIDEnum } from '/@/enums/mapboxEnum';
 
 const HEADER_BG_COLOR_VAR = '--header-bg-color';
 const HEADER_BG_HOVER_COLOR_VAR = '--header-bg-hover-color';
@@ -44,14 +45,14 @@ export function updateHeaderBgColor(color?: string) {
 }
 
 /**
- * Change the background color of the mapboxgl
+ * Change the background color of the mapbox
  */
-export function updateMapBoxGLBgColo() {
+export function updateMapboxBgColor() {
   const appStore = useAppStore();
   const darkMode = appStore.getDarkMode === ThemeEnum.DARK;
   appStore.setProjectConfig({
-    mapBoxGLSetting: {
-      theme: darkMode ? ThemeEnum.DARK : ThemeEnum.LIGHT,
+    mapboxSetting: {
+      style: darkMode ? MapboxStyleIDEnum.DARK_V11 : MapboxStyleIDEnum.LIGHT_V11,
     },
   });
 }

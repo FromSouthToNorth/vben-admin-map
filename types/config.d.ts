@@ -9,6 +9,7 @@ import {
 } from '/@/enums/appEnum';
 
 import { CacheTypeEnum } from '/@/enums/cacheEnum';
+import { MapboxStyleIDEnum, MapboxStyleTypeEnum } from '/@/enums/mapboxEnum';
 
 export type LocaleType = 'zh_CN' | 'en' | 'ru' | 'ja' | 'ko';
 
@@ -58,8 +59,9 @@ export interface HeaderSetting {
   showSearch: boolean;
 }
 
-export interface MapBoxGLSetting {
-  theme: ThemeEnum;
+export interface MapboxSetting {
+  style?: MapboxStyleIDEnum;
+  type?: MapboxStyleTypeEnum;
 }
 
 export interface LocaleSetting {
@@ -113,8 +115,8 @@ export interface ProjectConfig {
   showFooter: boolean;
   // menuType: MenuTypeEnum;
   headerSetting: HeaderSetting;
-  // mapBoxGL
-  mapBoxGLSetting: MapBoxGLSetting;
+  // mapbox
+  mapboxSetting: MapboxSetting;
   // menuSetting
   menuSetting: MenuSetting;
   // Multi-tab settings

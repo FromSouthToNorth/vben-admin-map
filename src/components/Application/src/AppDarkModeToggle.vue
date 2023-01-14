@@ -13,7 +13,7 @@
   import {
     updateHeaderBgColor,
     updateSidebarBgColor,
-    updateMapBoxGLBgColo,
+    updateMapboxBgColor,
   } from '/@/logics/theme/updateBackground';
   import { updateDarkTheme } from '/@/logics/theme/dark';
   import { ThemeEnum } from '/@/enums/appEnum';
@@ -36,7 +36,7 @@
     updateDarkTheme(darkMode);
     updateHeaderBgColor();
     updateSidebarBgColor();
-    updateMapBoxGLBgColo();
+    updateMapboxBgColor();
   }
 </script>
 <style lang="less" scoped>

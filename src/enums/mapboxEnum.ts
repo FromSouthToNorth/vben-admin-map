@@ -1,4 +1,6 @@
-export enum MapBoxStyleIDEnum {
+export const mapboxRouter = '/map/mapbox';
+
+export enum MapboxStyleIDEnum {
   // 街道
   STREETS_V12 = 'mapbox://styles/mapbox/streets-v12',
   // 户外
@@ -14,5 +16,23 @@ export enum MapBoxStyleIDEnum {
   // 导航 (白天)
   NAVIGATION_DAY_V1 = 'mapbox://styles/mapbox/navigation-day-v1',
   // 导航 (夜晚)
-  NAVIGATION_night_V1 = 'mapbox://styles/mapbox/navigation-night-v1',
+  NAVIGATION_NIGHT_V1 = 'mapbox://styles/mapbox/navigation-night-v1',
+}
+
+export enum MapboxStyleTypeEnum {
+  STREETS = 'streets',
+
+  OUTDOORS = 'outdoors',
+
+  LIGHT = 'light',
+
+  DARK = 'dark',
+
+  SATELLITE = 'satellite',
+
+  SATELLITE_STREETS = 'satellite-streets',
+
+  NAVIGATION_DAY = 'navigation-day',
+
+  NAVIGATION_NIGHT = 'navigation-night',
 }
