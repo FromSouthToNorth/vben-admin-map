@@ -4,7 +4,8 @@
 
 <script lang="ts" setup>
   import 'mapbox-gl/dist/mapbox-gl.css';
-  import mapbox from 'mapbox-gl/dist/mapbox-gl.js';
+  import * as mapbox from 'mapbox-gl/dist/mapbox-gl.js';
+  import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
   import { computed, onBeforeUnmount, onDeactivated, Ref, ref, unref, watch } from 'vue';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -44,6 +45,9 @@
       center: [104.0633, 30.6597],
       zoom: 9,
     });
+
+    // Add zoom and rotation controls to the map.
+    mapboxGlRef.value.addControl(new mapbox.NavigationControl());
   }
 
   watch(
