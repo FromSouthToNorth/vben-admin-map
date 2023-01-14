@@ -3,7 +3,7 @@ import type { AppRouteModule } from '/@/router/types';
 import { LAYOUT } from '/@/router/constant';
 import { t } from '/@/hooks/web/useI18n';
 
-const mapboxgl: AppRouteModule = {
+const map: AppRouteModule = {
   path: '/map',
   name: 'Map',
   component: LAYOUT,
@@ -26,4 +26,4 @@ const mapboxgl: AppRouteModule = {
   ],
 };
 
-export default mapboxgl;
+export default map;

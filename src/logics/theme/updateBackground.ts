@@ -1,8 +1,9 @@
-import { colorIsDark, lighten, darken } from '/@/utils/color';
+import { colorIsDark, darken, lighten } from '/@/utils/color';
 import { useAppStore } from '/@/store/modules/app';
 import { ThemeEnum } from '/@/enums/appEnum';
 import { setCssVar } from './util';
-import { MapboxStyleIDEnum } from '/@/enums/mapboxEnum';
+import { MapboxStyleIDEnum, MapboxStyleTypeEnum } from '/@/enums/mapboxEnum';
+import {MapboxSetting} from "/#/config";
 
 const HEADER_BG_COLOR_VAR = '--header-bg-color';
 const HEADER_BG_HOVER_COLOR_VAR = '--header-bg-hover-color';
@@ -50,10 +51,16 @@ export function updateHeaderBgColor(color?: string) {
 export function updateMapboxBgColor() {
   const appStore = useAppStore();
   const darkMode = appStore.getDarkMode === ThemeEnum.DARK;
+  const mapbox: MapboxSetting = {};
+  if (darkMode) {
+    mapbox.style = MapboxStyleIDEnum.DARK_V11;
+    mapbox.type = MapboxStyleTypeEnum.DARK;
+  } else {
+    mapbox.style = MapboxStyleIDEnum.LIGHT_V11;
+    mapbox.type = MapboxStyleTypeEnum.LIGHT;
+  }
   appStore.setProjectConfig({
-    mapboxSetting: {
-      style: darkMode ? MapboxStyleIDEnum.DARK_V11 : MapboxStyleIDEnum.LIGHT_V11,
-    },
+    mapboxSetting: mapbox,
   });
 }
 
