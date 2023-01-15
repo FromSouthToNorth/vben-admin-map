@@ -105,7 +105,6 @@ export default defineComponent({
     });
 
     function renderMapStyle() {
-      console.log();
       return (
         <>
           <TypePicker

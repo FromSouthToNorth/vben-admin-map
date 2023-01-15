@@ -6,7 +6,7 @@
   import 'mapbox-gl/dist/mapbox-gl.css';
   import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
   import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-  import { computed, onBeforeUnmount, onDeactivated, Ref, ref, toRaw, unref, watch } from 'vue';
+  import { computed, onBeforeUnmount, onDeactivated, Ref, ref, unref, watch } from 'vue';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useMapboxSetting } from '/@/hooks/setting/useMapboxSetting';
@@ -14,6 +14,7 @@
   import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.js';
   import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
   import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.min.js';
+  import lingShuiJson from '../data/lingshui.json';
 
   defineProps({
     width: {
@@ -25,6 +26,8 @@
       default: 'calc(100vh - 78px)',
     },
   });
+
+  console.log(lingShuiJson);
 
   const { getMapboxStyle } = useMapboxSetting();
 
@@ -50,7 +53,7 @@
       center: [106.93026, 30.33385],
       zoom: 12,
     });
-    console.log(mapboxgl);
+
     mapboxGlRef.value.addControl(
       new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
@@ -63,8 +66,48 @@
     const draw = new MapboxDraw();
     mapboxGlRef.value.addControl(draw, 'top-left');
 
-    mapboxGlRef.value.on('load', (e) => {
-      console.log(e);
+    mapboxGlRef.value.on('load', () => {
+      mapboxGlRef.value.addSource('lingShui', {
+        type: 'geojson',
+        data: lingShuiJson,
+      });
+
+      mapboxGlRef.value.addLayer({
+        id: 'park-boundary',
+        type: 'fill',
+        source: 'lingShui',
+        paint: {
+          'fill-color': '#f6ffed',
+          'fill-opacity': 0.1,
+        },
+        filter: ['==', '$type', 'Polygon'],
+      });
+
+      mapboxGlRef.value.addLayer({
+        id: 'park-volcanoes',
+        type: 'circle',
+        source: 'lingShui',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#B42222',
+        },
+        filter: ['==', '$type', 'Point'],
+      });
+
+      mapboxGlRef.value.addLayer({
+        id: 'route',
+        type: 'line',
+        source: 'lingShui',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+        },
+        paint: {
+          'line-color': '#e6f4ff',
+          'line-width': 1,
+        },
+      });
+
       mapboxGlRef.value.on('draw.create', (e) => {
         const { features } = e;
         drawLayers.value.push(features[0]);
