@@ -4,12 +4,16 @@
 
 <script lang="ts" setup>
   import 'mapbox-gl/dist/mapbox-gl.css';
-  import * as mapbox from 'mapbox-gl/dist/mapbox-gl.js';
+  import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
   import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-  import { computed, onBeforeUnmount, onDeactivated, Ref, ref, unref, watch } from 'vue';
+  import { computed, onBeforeUnmount, onDeactivated, Ref, ref, toRaw, unref, watch } from 'vue';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useMapboxSetting } from '/@/hooks/setting/useMapboxSetting';
+  import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+  import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.js';
+  import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+  import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.min.js';
 
   defineProps({
     width: {
@@ -26,7 +30,8 @@
 
   const { prefixCls } = useDesign('map-box-gl');
   const mapRef = ref<ElRef>(null);
-  const mapboxGlRef = ref(null) as Ref<Nullable<mapbox.Map>>;
+  const mapboxGlRef = ref(null) as Ref<Nullable<mapboxgl.Map>>;
+  const drawLayers = ref<Array<any>>([]);
 
   const styleId = computed(() => {
     return unref(getMapboxStyle);
@@ -36,18 +41,44 @@
     'pk.eyJ1IjoiaHlzZSIsImEiOiJja3c0ZDNxdTIwNHk1MnBtem5yZ2s4MDJmIn0.Bc8fEfsCPoB_ihTfnQ6zbg';
 
   function init() {
-    mapbox.accessToken = accessToken;
+    mapboxgl.accessToken = accessToken;
     const mapEL = unref(mapRef) as HTMLElement;
 
-    mapboxGlRef.value = new mapbox.Map({
+    mapboxGlRef.value = new mapboxgl.Map({
       container: mapEL,
       style: styleId.value,
-      center: [104.0633, 30.6597],
-      zoom: 9,
+      center: [106.93026, 30.33385],
+      zoom: 12,
     });
+    console.log(mapboxgl);
+    mapboxGlRef.value.addControl(
+      new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl,
+      }),
+    );
 
     // Add zoom and rotation controls to the map.
-    mapboxGlRef.value.addControl(new mapbox.NavigationControl());
+    mapboxGlRef.value.addControl(new mapboxgl.NavigationControl());
+    const draw = new MapboxDraw();
+    mapboxGlRef.value.addControl(draw, 'top-left');
+
+    mapboxGlRef.value.on('load', (e) => {
+      console.log(e);
+      mapboxGlRef.value.on('draw.create', (e) => {
+        const { features } = e;
+        drawLayers.value.push(features[0]);
+      });
+      mapboxGlRef.value.on('draw.update', (e) => {
+        const { features } = e;
+        const index = drawLayers.value.findIndex((e: typeof features[0]) => {
+          return e.id === features[0].id;
+        });
+        if (index !== -1) {
+          drawLayers[index] = features[0];
+        }
+      });
+    });
   }
 
   watch(
