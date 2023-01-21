@@ -14,7 +14,10 @@
   import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.js';
   import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
   import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.min.js';
-  import lingShuiJson from '../data/lingshui.json';
+  // import lingShuiJson from '../data/lingshui.json';
+  import test from '../data/test.json';
+
+  console.log(test);
 
   defineProps({
     width: {
@@ -26,8 +29,6 @@
       default: 'calc(100vh - 78px)',
     },
   });
-
-  console.log(lingShuiJson);
 
   const { getMapboxStyle } = useMapboxSetting();
 
@@ -65,69 +66,76 @@
     mapboxGlRef.value.addControl(new mapboxgl.NavigationControl());
     const draw = new MapboxDraw();
     mapboxGlRef.value.addControl(draw, 'top-left');
+    mapboxglOnLoad();
+  }
 
-    mapboxGlRef.value.on('load', () => {
-      mapboxGlRef.value.addSource('lingShui', {
-        type: 'geojson',
-        data: lingShuiJson,
-      });
-
-      mapboxGlRef.value.addLayer({
-        id: 'park-boundary',
-        type: 'fill',
-        source: 'lingShui',
-        paint: {
-          'fill-color': '#f6ffed',
-          'fill-opacity': 0.1,
-        },
-        filter: ['==', '$type', 'Polygon'],
-      });
-
-      mapboxGlRef.value.addLayer({
-        id: 'park-volcanoes',
-        type: 'circle',
-        source: 'lingShui',
-        paint: {
-          'circle-radius': 6,
-          'circle-color': '#B42222',
-        },
-        filter: ['==', '$type', 'Point'],
-      });
-
-      mapboxGlRef.value.addLayer({
-        id: 'route',
-        type: 'line',
-        source: 'lingShui',
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round',
-        },
-        paint: {
-          'line-color': '#e6f4ff',
-          'line-width': 1,
-        },
-      });
-
-      mapboxGlRef.value.on('draw.create', (e) => {
-        const { features } = e;
-        drawLayers.value.push(features[0]);
-      });
-      mapboxGlRef.value.on('draw.update', (e) => {
-        const { features } = e;
-        const index = drawLayers.value.findIndex((e: typeof features[0]) => {
-          return e.id === features[0].id;
+  function mapboxglOnLoad() {
+    console.log(mapboxGlRef);
+    if (mapboxGlRef !== null) {
+      mapboxGlRef.value.on('load', () => {
+        mapboxGlRef.value.addSource('lingShui', {
+          type: 'geojson',
+          data: test,
         });
-        if (index !== -1) {
-          drawLayers[index] = features[0];
-        }
+
+        mapboxGlRef.value.addLayer({
+          id: 'park-boundary',
+          type: 'fill',
+          source: 'lingShui',
+          paint: {
+            'fill-color': '#f5222d',
+            'fill-opacity': 0.1,
+          },
+          filter: ['==', '$type', 'Polygon'],
+        });
+
+        mapboxGlRef.value.addLayer({
+          id: 'park-volcanoes',
+          type: 'circle',
+          source: 'lingShui',
+          paint: {
+            'circle-radius': 6,
+            'circle-color': '#B42222',
+          },
+          filter: ['==', '$type', 'Point'],
+        });
+
+        mapboxGlRef.value.addLayer({
+          id: 'route',
+          type: 'line',
+          source: 'lingShui',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round',
+          },
+          paint: {
+            'line-color': '#f5222d',
+            'line-width': 8,
+          },
+        });
+
+        mapboxGlRef.value.on('draw.create', (e) => {
+          const { features } = e;
+          drawLayers.value.push(features[0]);
+        });
+        mapboxGlRef.value.on('draw.update', (e) => {
+          const { features } = e;
+          const index = drawLayers.value.findIndex((e: typeof features[0]) => {
+            return e.id === features[0].id;
+          });
+          if (index !== -1) {
+            drawLayers[index] = features[0];
+          }
+        });
       });
-    });
+    }
   }
 
   watch(
     () => styleId.value,
     (v) => {
       mapboxGlRef.value.setStyle(v);
+      mapboxglOnLoad();
     },
   );
 
