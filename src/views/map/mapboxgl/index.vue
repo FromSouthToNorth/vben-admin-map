@@ -17,7 +17,7 @@
   // import lingShuiJson from '../data/lingshui.json';
   import test from '../data/test.json';
 
-  console.log(test);
+  console.log('../data/test.json: ', test);
 
   defineProps({
     width: {
@@ -47,7 +47,7 @@
   function init() {
     mapboxgl.accessToken = accessToken;
     const mapEL = unref(mapRef) as HTMLElement;
-
+    if (!mapEL) return;
     mapboxGlRef.value = new mapboxgl.Map({
       container: mapEL,
       style: styleId.value,
@@ -67,68 +67,96 @@
     const draw = new MapboxDraw();
     mapboxGlRef.value.addControl(draw, 'top-left');
     mapboxglOnLoad();
+    mapboxglOnStyleLoad();
+  }
+
+  function getMapInstance() {
+    const mapInstance = unref(mapboxGlRef);
+    return mapInstance;
   }
 
   function mapboxglOnLoad() {
-    console.log(mapboxGlRef);
-    if (mapboxGlRef !== null) {
-      mapboxGlRef.value.on('load', () => {
-        mapboxGlRef.value.addSource('lingShui', {
-          type: 'geojson',
-          data: test,
-        });
-
-        mapboxGlRef.value.addLayer({
-          id: 'park-boundary',
-          type: 'fill',
-          source: 'lingShui',
-          paint: {
-            'fill-color': '#f5222d',
-            'fill-opacity': 0.1,
-          },
-          filter: ['==', '$type', 'Polygon'],
-        });
-
-        mapboxGlRef.value.addLayer({
-          id: 'park-volcanoes',
-          type: 'circle',
-          source: 'lingShui',
-          paint: {
-            'circle-radius': 6,
-            'circle-color': '#B42222',
-          },
-          filter: ['==', '$type', 'Point'],
-        });
-
-        mapboxGlRef.value.addLayer({
-          id: 'route',
-          type: 'line',
-          source: 'lingShui',
-          layout: {
-            'line-join': 'round',
-            'line-cap': 'round',
-          },
-          paint: {
-            'line-color': '#f5222d',
-            'line-width': 8,
-          },
-        });
-
-        mapboxGlRef.value.on('draw.create', (e) => {
-          const { features } = e;
-          drawLayers.value.push(features[0]);
-        });
-        mapboxGlRef.value.on('draw.update', (e) => {
-          const { features } = e;
-          const index = drawLayers.value.findIndex((e: typeof features[0]) => {
-            return e.id === features[0].id;
-          });
-          if (index !== -1) {
-            drawLayers[index] = features[0];
-          }
-        });
+    const mapInstance = getMapInstance();
+    if (!mapInstance) return;
+    const array = unref(drawLayers);
+    mapInstance.on('draw.create', (e) => {
+      const { features } = e;
+      array.push(features[0]);
+      console.log('draw.create - drawLayers: ', array);
+    });
+    mapInstance.on('draw.update', (e) => {
+      const { features } = e;
+      const index = array.findIndex((e: typeof features[0]) => {
+        return e.id === features[0].id;
       });
-    }
+      if (index !== -1) {
+        drawLayers[index] = features[0];
+      }
+      console.log('draw.update - drawLayers: ', array);
+    });
+    mapInstance.on('draw.delete', (e) => {
+      const { features } = e;
+      const indexs: Array<any> = [];
+      for (const layer of features) {
+        const index = array.findIndex((e: typeof layer[0]) => {
+          return e.id === layer.id;
+        });
+        indexs.push(index);
+      }
+      for (const index of indexs) {
+        if (index !== -1) {
+          array.splice(index, 1);
+        }
+      }
+      console.log('draw.delete - drawLayers: ', array);
+    });
+  }
+
+  function mapboxglOnStyleLoad() {
+    const mapInstance = getMapInstance();
+    if (!mapInstance) return;
+    mapInstance.on('style.load', () => {
+      mapInstance.addSource('lingShui', {
+        type: 'geojson',
+        data: test,
+      });
+
+      mapInstance.addLayer({
+        id: 'park-boundary',
+        type: 'fill',
+        source: 'lingShui',
+        paint: {
+          'fill-color': '#f5222d',
+          'fill-opacity': 0.1,
+        },
+        filter: ['==', '$type', 'Polygon'],
+      });
+
+      mapInstance.addLayer({
+        id: 'park-volcanoes',
+        type: 'circle',
+        source: 'lingShui',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#B42222',
+        },
+        filter: ['==', '$type', 'Point'],
+      });
+
+      mapInstance.addLayer({
+        id: 'route',
+        type: 'line',
+        source: 'lingShui',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+        },
+        paint: {
+          'line-color': '#f5222d',
+          'line-width': 1,
+        },
+      });
+    });
   }
 
   watch(

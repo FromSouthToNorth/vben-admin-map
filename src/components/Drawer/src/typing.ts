@@ -1,6 +1,6 @@
 import type { ButtonProps } from 'ant-design-vue/lib/button/buttonTypes';
 import type { CSSProperties, VNodeChild, ComputedRef } from 'vue';
-import type { ScrollContainerOptions } from '/@/components/Container/index';
+import type { ScrollContainerOptions } from '/@/components/Container';
 
 export interface DrawerInstance {
   setDrawerProps: (props: Partial<DrawerProps> | boolean) => void;
@@ -134,7 +134,7 @@ export interface DrawerProps extends DrawerFooterProps {
    * @type string
    */
   wrapClassName?: string;
-
+  class?: string;
   /**
    * Style of wrapper element which **contains mask** compare to `drawerStyle`
    * @type object

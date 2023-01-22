@@ -19,6 +19,7 @@
   import { useModalContext } from '../../Modal';
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
+  import { getTheme } from './getTheme';
 
   type Lang = 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' | undefined;
 
@@ -46,8 +47,9 @@
           if (!inited) {
             return;
           }
-          const theme = val === 'dark' ? 'dark' : 'classic';
-          instance.getVditor()?.setTheme(theme);
+          instance
+            .getVditor()
+            ?.setTheme(getTheme(val) as any, getTheme(val, 'content'), getTheme(val, 'code'));
         },
         {
           immediate: true,
