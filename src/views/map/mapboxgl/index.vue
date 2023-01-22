@@ -1,5 +1,5 @@
 <template>
-  <div ref="mapRef" :class="prefixCls" :style="{ width, height }"></div>
+  <div ref="mapRef" id="map-container" :class="prefixCls" :style="{ width, height }"></div>
 </template>
 
 <script lang="ts" setup>
@@ -66,6 +66,12 @@
     mapboxGlRef.value.addControl(new mapboxgl.NavigationControl());
     const draw = new MapboxDraw();
     mapboxGlRef.value.addControl(draw, 'top-left');
+    const scale = new mapboxgl.ScaleControl({
+      maxWidth: 80,
+      unit: 'metric',
+    });
+    mapboxGlRef.value.addControl(scale);
+
     mapboxglOnLoad();
     mapboxglOnStyleLoad();
   }
@@ -181,4 +187,11 @@
   onDeactivated(destroy);
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less">
+  #map-container {
+    .mapboxgl-ctrl.mapboxgl-ctrl-scale {
+      background-color: transparent;
+      min-width: 70px;
+    }
+  }
+</style>
